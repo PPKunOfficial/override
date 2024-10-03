@@ -6,10 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
-	"golang.org/x/net/http2"
 	"io"
 	"log"
 	"net/http"
@@ -19,6 +15,11 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/tidwall/gjson"
+	"github.com/tidwall/sjson"
+	"golang.org/x/net/http2"
 )
 
 const DefaultInstructModel = "gpt-3.5-turbo-instruct"
@@ -209,6 +210,7 @@ func (s *ProxyService) InitRoutes(e *gin.Engine) {
 		e.POST("/v1/v1/chat/completions", s.completions)
 		e.POST("/v1/v1/engines/copilot-codex/completions", s.codeCompletions)
 	}
+	coauth(e)
 }
 
 type Pong struct {
