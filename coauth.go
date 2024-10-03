@@ -22,6 +22,26 @@ type Popilot struct {
 
 var popilotDB = []Popilot{}
 
+// coauth 函数用于配置和初始化 Gin 引擎的路由。
+// 它读取配置文件，并设置多个 HTTP 路由处理函数，以实现设备登录、OAuth 认证和用户信息获取等功能。
+//
+// 参数:
+//   - r: 指向 gin.Engine 的指针，用于注册路由和处理函数。
+//
+// 路由说明:
+//   - GET "/"：返回欢迎信息 "Hello Popilot!"。
+//   - GET "/login/device"：返回提示信息 "请关闭此页面"。
+//   - POST "/login/device/code"：生成设备代码和用户代码，并返回相关信息。
+//   - POST "/login/oauth/access_token"：根据设备代码和客户端ID生成访问令牌。
+//   - GET "/api/v3/user"：返回模拟的用户信息。
+//   - GET "/api/v3/meta"：返回空的元信息。
+//   - GET "/copilot_internal/v2/token"：根据访问令牌生成跟踪ID和过期时间，并返回相关配置信息。
+//   - GET "/teams/:team/memberships/:membership"：返回404错误，提示未找到。
+//
+// 注意:
+//   - 该函数依赖于外部配置读取函数 readConfig 和全局变量 popilotDB。
+//   - 使用了 uuid 包生成唯一标识符。
+//   - 使用了 gin 框架进行 HTTP 请求处理。
 func coauth(r *gin.Engine) {
 	cfg := readConfig()
 	r.GET("/", func(c *gin.Context) {
